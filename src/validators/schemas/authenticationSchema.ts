@@ -8,7 +8,7 @@ export const authenticationSchema: Schema = {
   password: {
     isLength: {
       options: { min: 6 },
-      errorMessage: "Password must have at least 6 characters",
+      errorMessage: "Password must have at least 6 characters.",
     },
   },
 };
