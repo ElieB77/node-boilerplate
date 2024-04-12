@@ -1,5 +1,5 @@
 import prisma from "../database/db";
-import logger from "../logger";
+import logger, { customLog } from "../logger";
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 import asyncHandler from "express-async-handler";
@@ -10,10 +10,7 @@ export const protect = asyncHandler(
     const bearer = req.headers.authorization;
 
     if (!bearer) {
-      logger.error(
-        `method: ${req.method}, route: ${req.url}, message: Not authorized`
-      );
-      return res.status(401).json({ message: "Not authorized" });
+      return next(errorHandler(401, "Not authorized"));
     }
 
     const [, token] = bearer.split(" ");
