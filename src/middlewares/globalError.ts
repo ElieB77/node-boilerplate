@@ -7,6 +7,20 @@ export const exceptionHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  logger.error(`method: ${req.method}, route: ${req.url}, message: ${error}`);
-  return res.status(500).json({ message: "Internal server error" });
+  const statusCode = error.statusCode || 500;
+  const message = error.message || "Internal Server Error";
+  const data = error.data || null;
+
+  logger.error(
+    `method: ${req.method}, route: ${req.url}, message: ${message} ${
+      data ? "-> " + data : ""
+    }`
+  );
+
+  return res.status(statusCode).json({
+    success: false,
+    statusCode: statusCode,
+    message: message,
+    data: data,
+  });
 };
