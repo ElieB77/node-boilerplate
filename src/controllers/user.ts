@@ -1,9 +1,9 @@
 import prisma from "../database/db";
-import logger from "../logger";
 import asyncHandler from "express-async-handler";
 import { userProjection } from "../utils/user";
 import { Response, Request, NextFunction } from "express";
 import { errorHandler } from "../utils/errorHandler";
+import { customLog } from "../logger";
 
 export const UserController = {
   getUsers: asyncHandler(
@@ -16,9 +16,7 @@ export const UserController = {
         return next(errorHandler(404, "Users not found"));
       }
 
-      logger.info(
-        `method: ${req.method}, route: ${req.url}, message: Got users succesfully`
-      );
+      customLog("info", req, "Got users succesfully");
       res.status(200).json({ data: users });
     }
   ),
@@ -36,9 +34,7 @@ export const UserController = {
         return next(errorHandler(404, "User not found", user.email));
       }
 
-      logger.info(
-        `method: ${req.method}, route: ${req.url}, message: Got user succesfully -> ${user.email}`
-      );
+      customLog("info", req, `Got user succesfully -> ${user.email}`);
       res.status(200).json({ data: user });
     }
   ),
@@ -64,8 +60,10 @@ export const UserController = {
         select: userProjection(),
       });
 
-      logger.info(
-        `method: ${req.method}, route: ${req.url}, message: User deleted succesfully -> ${deletedUser.email}`
+      customLog(
+        "info",
+        req,
+        `User deleted succesfully -> ${deletedUser.email}`
       );
       res.status(200).json({ data: deletedUser });
     }

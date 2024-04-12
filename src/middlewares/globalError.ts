@@ -1,4 +1,4 @@
-import logger from "../logger";
+import logger, { customLog } from "../logger";
 import { Request, Response, NextFunction } from "express";
 
 export const exceptionHandler = (
@@ -11,11 +11,7 @@ export const exceptionHandler = (
   const message = error.message || "Internal Server Error";
   const data = error.data || null;
 
-  logger.error(
-    `method: ${req.method}, route: ${req.url}, message: ${message} ${
-      data ? "-> " + data : ""
-    }`
-  );
+  customLog("error", req, `${message} ${data ? "-> " + data : ""}`);
 
   return res.status(statusCode).json({
     success: false,

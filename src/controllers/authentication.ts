@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-import logger from "../logger";
 import prisma from "../database/db";
 import {
   comparePassword,
@@ -8,6 +7,7 @@ import {
 } from "../utils/authentication";
 import asyncHandler from "express-async-handler";
 import { errorHandler } from "../utils/errorHandler";
+import { customLog } from "../logger";
 
 export const AuthController = {
   signup: asyncHandler(
@@ -34,9 +34,7 @@ export const AuthController = {
       });
 
       const token = createJWT(newUser);
-      logger.info(
-        `method: ${req.method}, route: ${req.url}, message: Signup succesful -> ${newUser.email}`
-      );
+      customLog("info", req, `New user -> ${newUser.email}`);
       res.status(200).json({ token });
     }
   ),
@@ -62,9 +60,7 @@ export const AuthController = {
       }
 
       const token = createJWT(user);
-      logger.info(
-        `method: ${req.method}, route: ${req.url}, message: Logged in succesful -> ${user.email}`
-      );
+      customLog("info", req, `Logged in -> ${user.email}`);
       res.status(200).json({ token });
     }
   ),
