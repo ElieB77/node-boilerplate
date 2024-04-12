@@ -2,74 +2,72 @@ import prisma from "../database/db";
 import logger from "../logger";
 import asyncHandler from "express-async-handler";
 import { userProjection } from "../utils/user";
-import { Response, Request } from "express";
+import { Response, Request, NextFunction } from "express";
+import { errorHandler } from "../utils/errorHandler";
 
 export const UserController = {
-  getUsers: asyncHandler(async (req: Request, res: Response) => {
-    const users = await prisma.user.findMany({
-      select: userProjection(),
-    });
+  getUsers: asyncHandler(
+    async (req: Request, res: Response, next: NextFunction) => {
+      const users = await prisma.user.findMany({
+        select: userProjection(),
+      });
 
-    if (!users) {
-      logger.error(
-        `method: ${req.method}, route: ${req.url}, message: Users not found`
+      if (!users) {
+        return next(errorHandler(404, "Users not found"));
+      }
+
+      logger.info(
+        `method: ${req.method}, route: ${req.url}, message: Got users succesfully`
       );
-      res.status(404).json({ message: "Users not found" });
+      res.status(200).json({ data: users });
     }
+  ),
 
-    logger.info(
-      `method: ${req.method}, route: ${req.url}, message: Got users succesfully`
-    );
-    res.status(200).json({ data: users });
-  }),
+  findUser: asyncHandler(
+    async (req: Request, res: Response, next: NextFunction) => {
+      const user = await prisma.user.findUnique({
+        where: {
+          id: req.params.id,
+        },
+        select: userProjection(),
+      });
 
-  findUser: asyncHandler(async (req: Request, res: Response) => {
-    const user = await prisma.user.findUnique({
-      where: {
-        id: req.params.id,
-      },
-      select: userProjection(),
-    });
+      if (!user) {
+        return next(errorHandler(404, "User not found", user.email));
+      }
 
-    if (!user) {
-      logger.error(
-        `method: ${req.method}, route: ${req.url}, message: User not found`
+      logger.info(
+        `method: ${req.method}, route: ${req.url}, message: Got user succesfully -> ${user.email}`
       );
-      return res.status(404).json({ message: "User not found" });
+      res.status(200).json({ data: user });
     }
+  ),
 
-    logger.info(
-      `method: ${req.method}, route: ${req.url}, message: Got user succesfully -> ${user.email}`
-    );
-    res.status(200).json({ data: user });
-  }),
+  deleteUser: asyncHandler(
+    async (req: Request, res: Response, next: NextFunction) => {
+      const userId = req.params.id;
 
-  deleteUser: asyncHandler(async (req: Request, res: Response) => {
-    const userId = req.params.id;
+      const user = await prisma.user.findUnique({
+        where: {
+          id: userId,
+        },
+      });
 
-    const user = await prisma.user.findUnique({
-      where: {
-        id: userId,
-      },
-    });
+      if (!user) {
+        return next(errorHandler(404, "User not found", user.email));
+      }
 
-    if (!user) {
-      logger.error(
-        `method: ${req.method}, route: ${req.url}, message: User not found`
+      const deletedUser = await prisma.user.delete({
+        where: {
+          id: userId,
+        },
+        select: userProjection(),
+      });
+
+      logger.info(
+        `method: ${req.method}, route: ${req.url}, message: User deleted succesfully -> ${deletedUser.email}`
       );
-      return res.status(404).json({ message: "User not found" });
+      res.status(200).json({ data: deletedUser });
     }
-
-    const deletedUser = await prisma.user.delete({
-      where: {
-        id: userId,
-      },
-      select: userProjection(),
-    });
-
-    logger.info(
-      `method: ${req.method}, route: ${req.url}, message: User deleted succesfully -> ${deletedUser.email}`
-    );
-    res.status(200).json({ data: deletedUser });
-  }),
+  ),
 };
