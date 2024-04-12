@@ -35,7 +35,8 @@ export const protect = (req: Request, res: Response, next: NextFunction) => {
 };
 
 export const authorize =
-  (requiredRole) => async (req: Request, res: Response, next: NextFunction) => {
+  (requiredRole: string) =>
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       const user = await prisma.user.findUnique({
         where: {
@@ -45,9 +46,9 @@ export const authorize =
 
       if (user.role !== requiredRole) {
         logger.error(
-          `method: ${req.method}, route: ${req.url}, message: Forbidden, admin only`
+          `method: ${req.method}, route: ${req.url}, message: Forbidden. admin only`
         );
-        return res.status(403).json({ error: "Forbidden" });
+        return res.status(403).json({ error: "Forbidden. Admin only" });
       }
 
       next();
