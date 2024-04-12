@@ -8,6 +8,7 @@ import logger from "./logger";
 const app = express();
 dotenv.config();
 const port = process.env.PORT;
+const baseUrl = process.env.BASE_URL;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -17,9 +18,7 @@ app.use(exceptionHandler);
 
 const startServer = async () => {
   app
-    .listen(port, () =>
-      logger.info(`🚀 Server ready at: http://localhost:${port}`)
-    )
+    .listen(port, () => logger.info(`🚀 Server ready at: ${baseUrl}:${port}`))
     .on("error", (error) => {
       logger.error(error.message);
       process.exit(1);
