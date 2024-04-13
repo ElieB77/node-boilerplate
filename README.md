@@ -68,3 +68,7 @@ Check if the app is healthy by sending a GET request to the '/health' endpoint:
 ```
 http://localhost:3000/health
 ```
+
+## Contributing
+Contributions are more than welcome!
+
