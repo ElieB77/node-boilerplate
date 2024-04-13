@@ -4,6 +4,7 @@ import router from "./routes";
 import * as dotenv from "dotenv";
 import { exceptionHandler } from "./middlewares/globalError";
 import logger from "./logger";
+import helmet from "helmet";
 
 const app = express();
 dotenv.config();
@@ -13,6 +14,7 @@ const baseUrl = process.env.BASE_URL;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+app.use(helmet());
 app.use("/", router);
 app.use(exceptionHandler);
 
