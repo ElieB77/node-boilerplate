@@ -57,11 +57,11 @@ npm install
 
 Create a '.env' file in the root directory with the following:
 ```
-- PORT=3000
-- DATABASE_URI=mongodb+srv://<YOUR_NAME>:<YOUR_PASSWORD>@cluster0.vvptu.mongodb.net/<YOUR_DB_NAME>
-- JWT_SECRET=myjwtsecret
-- LOG_LEVEL=debug
-- BASE_URL=http://localhost
+PORT=3000
+DATABASE_URI=mongodb+srv://<YOUR_NAME>:<YOUR_PASSWORD>@cluster0.vvptu.mongodb.net/<YOUR_DB_NAME>
+JWT_SECRET=myjwtsecret
+LOG_LEVEL=debug
+BASE_URL=http://localhost
 ```
 
 Check if the app is healthy by sending a GET request to the '/health' endpoint:
