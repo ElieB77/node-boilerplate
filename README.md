@@ -42,6 +42,7 @@ A simple and easy to use Node/Express starter with basic setup for authenticatio
 • Docker <br>
 • CI/CD <br>
 • OAuth 2.0 
+• File system 
 
 ## Getting Started
 
