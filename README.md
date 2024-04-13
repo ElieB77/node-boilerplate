@@ -40,9 +40,11 @@ A simple and easy to use Node/Express starter with basic setup for authenticatio
 
 • Testing <br>
 • Docker <br>
-• CI/CD <br>
+• CI <br>
 • OAuth 2.0 <br>
-• File system 
+• File system <br>
+• Git hooks <br>
+• Linting  <br>
 
 ## Getting Started
 
