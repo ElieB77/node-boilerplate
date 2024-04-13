@@ -14,7 +14,6 @@ export const exceptionHandler = (
   customLog("error", req, `${message} ${data ? "-> " + data : ""}`);
 
   return res.status(statusCode).json({
-    success: false,
     statusCode: statusCode,
     message: message,
     data: data,
