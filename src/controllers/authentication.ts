@@ -22,7 +22,7 @@ export const AuthController = {
 
       if (alreadyExists) {
         return next(
-          errorHandler(400, "User already exists", alreadyExists.email)
+          errorHandler(409, "User already exists", alreadyExists.email)
         );
       }
 
