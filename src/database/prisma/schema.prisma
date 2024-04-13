@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
@@ -13,11 +13,13 @@ enum USER_ROLES {
 }
 
 model User {
-  id String @id @default(uuid())
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime @default(now())
-  email   String   @unique
+  email String @unique
   password String
-  firstName    String? @db.VarChar(255)
-  lastName    String? @db.VarChar(255)
+  firstName String?
+  lastName String?
   role USER_ROLES @default(USER)
 }
+
+
