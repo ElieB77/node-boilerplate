@@ -1,6 +1,11 @@
-# Node/Express Boilerplate
+<div align="center">
+  
+![sloth](https://github.com/ElieB77/node-boilerplate/assets/69645252/1831f9ac-30b6-4f9a-bed1-21598ac8a2a1)
 
+  
+  # Node/Express Boilerplate
 A simple and easy to use Node/Express starter with basic setup for authentication, routing, middleware, logging and testing.
+</div>
 
 ## Features
 
