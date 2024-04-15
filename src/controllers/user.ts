@@ -39,6 +39,29 @@ export const UserController = {
     }
   ),
 
+  updateUser: asyncHandler(
+    async (req: Request, res: Response, next: NextFunction) => {
+      const { firstName } = req.body;
+
+      const user = await prisma.user.update({
+        where: {
+          id: req.params.id,
+        },
+        data: {
+          firstName,
+        },
+        select: userProjection(),
+      });
+
+      if (!user) {
+        return next(errorHandler(404, "User not found", user.email));
+      }
+
+      customLog("info", req, `user updated succesfully -> ${user.email}`);
+      res.status(200).json({ data: user });
+    }
+  ),
+
   deleteUser: asyncHandler(
     async (req: Request, res: Response, next: NextFunction) => {
       const userId = req.params.id;
