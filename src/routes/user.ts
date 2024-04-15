@@ -8,6 +8,11 @@ const router = express.Router();
 
 router.get("/users", UserController.getUsers);
 router.get("/:id", validate(checkSchema(userSchema)), UserController.findUser);
+router.put(
+  "/:id",
+  validate(checkSchema(userSchema)),
+  UserController.updateUser
+);
 router.delete(
   "/:id",
   validate(checkSchema(userSchema)),
