@@ -1,4 +1,4 @@
-interface ResponseError extends Error {
+export interface ResponseError extends Error {
   statusCode?: number;
   data?: string | string[];
 }
