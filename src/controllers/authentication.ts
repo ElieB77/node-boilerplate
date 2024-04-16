@@ -33,7 +33,7 @@ export const AuthController = {
         },
       });
 
-      const token = createJWT(newUser);
+      const token = createJWT(newUser.id);
       customLog("info", req, `New user -> ${newUser.email}`);
       res.status(200).json({ token });
     }
@@ -59,7 +59,7 @@ export const AuthController = {
         return next(errorHandler(401, "Invalid email or password", user.email));
       }
 
-      const token = createJWT(user);
+      const token = createJWT(user.id);
       customLog("info", req, `Logged in -> ${user.email}`);
       res.status(200).json({ token });
     }
