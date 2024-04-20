@@ -22,7 +22,7 @@ export const AuthController = {
 
       if (alreadyExists) {
         return next(
-          errorHandler(409, "User already exists", alreadyExists.email)
+          errorHandler(409, "User already exists", alreadyExists.email),
         );
       }
 
@@ -35,8 +35,8 @@ export const AuthController = {
 
       const token = createJWT(newUser.id);
       customLog("info", req, `New user -> ${newUser.email}`);
-      res.status(200).json({ token });
-    }
+      res.status(201).json({ token });
+    },
   ),
 
   signin: asyncHandler(
@@ -62,6 +62,6 @@ export const AuthController = {
       const token = createJWT(user.id);
       customLog("info", req, `Logged in -> ${user.email}`);
       res.status(200).json({ token });
-    }
+    },
   ),
 };
